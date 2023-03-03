@@ -1,0 +1,29 @@
+[
+	{
+		"title": "queso",
+		"description": "500 gr",
+		"price": 5,
+		"thumbnail": "image1",
+		"code": "FJHGN",
+		"stock": 10,
+		"id": 1
+	},
+	{
+		"title": "Hola Mundo",
+		"description": "500 gr",
+		"price": 5,
+		"thumbnail": "image1",
+		"code": "FJHGN",
+		"stock": 35,
+		"id": 2
+	},
+	{
+		"title": "queso",
+		"description": "500 gr",
+		"price": 5,
+		"thumbnail": "image1",
+		"code": "FJHGN",
+		"stock": 10,
+		"id": 3
+	}
+]
