@@ -1,6 +1,6 @@
-const fs = require("fs");
+import fs from "fs";
 
-class ProductManager {
+export default class ProductManager {
   constructor() {
     this.path = "./files/Products.json";
   }
@@ -75,5 +75,3 @@ class ProductManager {
     return "Product deletion: successful!";
   };
 }
-
-module.exports = ProductManager;
