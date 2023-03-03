@@ -3,10 +3,10 @@ const ProductManager = require("./ProductManager.js");
 const env = async () => {
   const manager = new ProductManager();
 
-  /*   let products = await manager.getProducts();
-  console.log(products); */
+  let products = await manager.getProducts();
+  console.log(products);
 
-  /*   const product = {
+  const product = {
     title: "queso",
     description: "500 gr",
     price: 5,
@@ -15,7 +15,7 @@ const env = async () => {
     stock: 10,
   };
 
-  await manager.addProduct(product); */
+  await manager.addProduct(product);
 
   const changes = {
     title: "Hola Mundo",
@@ -23,7 +23,7 @@ const env = async () => {
 
   await manager.updateProduct(2, changes);
 
-  // await manager.deleteProduct(3);
+  await manager.deleteProduct(3);
 };
 
 env();
