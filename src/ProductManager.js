@@ -1,77 +1,98 @@
 import fs from "fs";
+import __dirname from "./utils.js";
 
 export default class ProductManager {
   constructor() {
-    this.path = "./files/Products.json";
+    this.path = `${__dirname}/files/Products.json`;
   }
 
   getProducts = async () => {
-    if (fs.existsSync(this.path)) {
-      const productsString = await fs.promises.readFile(this.path, "utf-8");
-      const products = JSON.parse(productsString);
-      return products;
-    } else {
-      return [];
+    try {
+      if (fs.existsSync(this.path)) {
+        const productsString = await fs.promises.readFile(this.path, "utf-8");
+        const products = JSON.parse(productsString);
+        return products;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   addProduct = async (product) => {
-    const products = await this.getProducts();
+    try {
+      const products = await this.getProducts();
 
-    product.id =
-      products.length === 0 ? 1 : products[products.length - 1].id + 1;
+      product.id =
+        products.length === 0 ? 1 : products[products.length - 1].id + 1;
 
-    products.push(product);
+      products.push(product);
 
-    await fs.promises.writeFile(
-      this.path,
-      JSON.stringify(products, null, "\t")
-    );
-    return product;
+      await fs.promises.writeFile(
+        this.path,
+        JSON.stringify(products, null, "\t")
+      );
+      return product;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   getProductById = async (id) => {
-    const products = await this.getProducts();
-    const product = products.find((product) => product.id === id);
-    if (!product) return false;
-    return product;
+    try {
+      const products = await this.getProducts();
+      const product = products.find((product) => product.id === id);
+      if (!product) throw new Error("Product was not found");
+      return product;
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   updateProduct = async (id, changes) => {
-    const products = await this.getProducts();
-    const product = await this.getProductById(id);
-    const productIndex = products.findIndex((product) => product.id === id);
+    try {
+      const products = await this.getProducts();
+      const product = await this.getProductById(id);
+      const productIndex = products.findIndex((product) => product.id === id);
 
-    if (changes.id) {
-      return "Error: Cannot modify id property";
+      if (changes.id) {
+        throw new Error("Cannot modify id property");
+      }
+
+      const updatedProduct = {
+        ...product,
+        ...changes,
+      };
+
+      products.splice(productIndex, 1, updatedProduct);
+
+      await fs.promises.writeFile(
+        this.path,
+        JSON.stringify(products, null, "\t")
+      );
+      return updatedProduct;
+    } catch (error) {
+      console.log(error);
     }
-
-    const updatedProduct = {
-      ...product,
-      ...changes,
-    };
-
-    products.splice(productIndex, 1, updatedProduct);
-
-    await fs.promises.writeFile(
-      this.path,
-      JSON.stringify(products, null, "\t")
-    );
-    return updatedProduct;
   };
 
   deleteProduct = async (id) => {
-    const products = await this.getProducts();
-    const productIndex = products.findIndex((product) => product.id === id);
+    try {
+      const products = await this.getProducts();
+      const productIndex = products.findIndex((product) => product.id === id);
 
-    if (productIndex === -1)
-      return `Error: Product with id ${id} does not exist.`;
+      if (productIndex === -1)
+        throw new Error(`Error: Product with id ${id} does not exist.`);
 
-    products.splice(productIndex, 1);
-    await fs.promises.writeFile(
-      this.path,
-      JSON.stringify(products, null, "\t")
-    );
-    return "Product deletion: successful!";
+      products.splice(productIndex, 1);
+      await fs.promises.writeFile(
+        this.path,
+        JSON.stringify(products, null, "\t")
+      );
+      return;
+    } catch (error) {
+      console.log(error);
+    }
   };
 }
