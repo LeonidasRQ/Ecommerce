@@ -8,7 +8,9 @@ const router = Router();
 router.post("/", async (req, res) => {
   const cart = req.body;
   if (!cart) {
-    res.status(400).send({ status: "Error", error: "Cart could not be added" });
+    return res
+      .status(400)
+      .send({ status: "Error", error: "Cart could not be added" });
   }
 
   const newCart = await manager.addCart(cart);
@@ -21,7 +23,6 @@ router.post("/", async (req, res) => {
 
 router.get("/:cid", async (req, res) => {
   const cartId = req.params.cid;
-
   const cart = await manager.getCartById(+cartId);
 
   if (!cart) {
