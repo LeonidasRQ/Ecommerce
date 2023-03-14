@@ -22,13 +22,14 @@ router.post("/", async (req, res) => {
 router.get("/:cid", async (req, res) => {
   const cartId = req.params.cid;
 
-  if (!cartId) {
-    return res
-      .status(400)
-      .send({ status: "Error", error: "Please especify a cart id" });
-  }
-
   const cart = await manager.getCartById(+cartId);
+
+  if (!cart) {
+    return res.status(404).send({
+      status: "Error",
+      error: "cart was not found",
+    });
+  }
   return res.send({ status: "OK", message: "Cart found", payload: cart });
 });
 
