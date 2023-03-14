@@ -64,17 +64,6 @@
 		"status": "true",
 		"stock": "5",
 		"category": "Food",
-		"thumbnails": [],
-		"id": 13
-	},
-	{
-		"title": "tomato",
-		"description": "500 gr",
-		"code": "ASGHDG",
-		"price": "50",
-		"status": "true",
-		"stock": "5",
-		"category": "Food",
 		"thumbnails": [
 			"http://localhost:8080/images/1678423451425-bd9a9c6b74f7d51b35da4397a1a5cc79.gif",
 			"http://localhost:8080/images/1678423451437-8ea5d4080c8d1e153b07d35778fa51c3.jpg",

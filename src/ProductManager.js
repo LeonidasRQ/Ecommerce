@@ -90,7 +90,8 @@ export default class ProductManager {
         this.path,
         JSON.stringify(products, null, "\t")
       );
-      return;
+
+      return true;
     } catch (error) {
       console.log(error);
     }

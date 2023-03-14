@@ -21,11 +21,13 @@ router.get("/", async (req, res) => {
 
 router.get("/:pid", async (req, res) => {
   const productId = req.params.pid;
-
-  if (!productId) {
-    return res.send({ error: "You must specify a product id" });
-  }
   const product = await manager.getProductById(+productId);
+
+  if (!product) {
+    return res
+      .status(404)
+      .send({ status: "Error", error: "product was not found" });
+  }
   return res.send({ status: "OK", message: product });
 });
 
@@ -57,12 +59,13 @@ router.put("/:pid", async (req, res) => {
   const productId = req.params.pid;
   const changes = req.body;
 
-  if (!productId) {
-    return res
-      .status(400)
-      .send({ status: "Error", error: "Product was not found" });
-  }
   const updatedProduct = await manager.updateProduct(+productId, changes);
+
+  if (!updatedProduct) {
+    return res
+      .status(404)
+      .send({ status: "Error", error: "product was not found" });
+  }
   return res.send({
     status: "OK",
     message: "Product succesfully updated",
@@ -72,14 +75,13 @@ router.put("/:pid", async (req, res) => {
 
 router.delete("/:pid", async (req, res) => {
   const productId = req.params.pid;
+  const deletedProduct = await manager.deleteProduct(+productId);
 
-  if (!productId) {
+  if (!deletedProduct) {
     return res
-      .status(400)
-      .send({ status: "Error", error: "A product id must be specified" });
+      .status(404)
+      .send({ status: "Error", error: "Product does not exist" });
   }
-
-  await manager.deleteProduct(+productId);
   return res.send({ status: "OK", message: "Product deleted successfully" });
 });
 
