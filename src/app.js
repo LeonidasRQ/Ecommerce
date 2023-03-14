@@ -1,34 +1,17 @@
-import ProductManager from "../ProductManager.js";
 import express from "express";
+import productsRouter from "./routes/product.router.js";
+import cartsRouter from "./routes/cart.router.js";
+import __dirname from "./utils.js";
 
 const app = express();
 
-const manager = new ProductManager();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/", express.static(`${__dirname}/public`));
+
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
 
 app.listen(8080, (req, res) => {
   console.log("Listening on port 8080");
-});
-
-app.get("/products", async (req, res) => {
-  const { limit } = req.query;
-
-  const products = await manager.getProducts();
-
-  if (!limit) {
-    return res.send({ products: products });
-  }
-
-  const limitedProducts = products.slice(0, limit);
-
-  res.send({ products: limitedProducts });
-});
-
-app.get("/products/:id", async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    return res.send({ error: "You must specify a product id" });
-  }
-  const product = await manager.getProductById(+id);
-  res.send(product);
 });
