@@ -1,18 +1,52 @@
-# Desafio Entregable
+# Desafio Complementario
 
-## Resumen
-
-Configurar nuestro proyecto para que trabaje con Handlebars y websocket
+En este desafio modificaremos el modelo de persistencia que utilizamos actualmente con archivos e introduciremos MongoDB y mongoose. Paralelamente practicaremos un poco con websockets!
 
 ## Requerimientos
 
-1. Configurar el servidor para integrar el motor de plantillas Handlebars e instalar un servidor de socket.io al mismo
-2. Crear una vista `home.handlebars` la cual contenga una lista de todos los productos agregados hasta el momento
-3. Además, crear una vista `realTimeProducts.handlebars`, la cual vivirá en el endpoint `/realtimeproducts` en nuestro `views.router`, ésta contendrá la misma lista de productos, sin embargo, ésta trabajará con websockets
-   1. Al trabajar con websockets, cada vez que creemos un producto nuevo, o bien cada vez que eliminemos un producto, se debe actualizar automáticamente en dicha vista la lista
+1. ¡Comencemos a implementar nuestro modelo de persistencia basado con MongoDB y mongoose! **NO BORRES LO IMPLEMENTACIÓN DE ARCHIVOS**
 
-## Sugerencias
+   1. Configuremos MongoDB Atlas
 
-1. Ya que la conexión entre una consulta HTTP y websocket no está contemplada dentro de la clase `ProductManager`. Se recomienda:
-   1. Para la creación y eliminación de un producto se cree un formulario simple en la vista `realTimeProducts.handlebars` para que el contenido se envíe desde websockets y no HTTP. Sin embargo, esta no es la mejor solución, leer el siguiente punto.
-2. Si se desea hacer la conexión de socket emits con HTTP, deberás buscar la forma de utilizar el servidor io de Sockets dentro de la petición POST. ¿Cómo utilizarás un emit dentro del POST?
+      1. Crea una base de datos en MondoDB Atlas llamada `ecommerce` que contenga tres colecciones: `carts`, `products` y `messages`
+      2. Configura las credenciales de acceso. Asegurate de copiar la contraseña y guardarla en un lugar seguro
+      3. Obten la URL de conexión para nuestra aplicación
+
+   2. Configuremos la base de datos en nuestro editor de codigo
+
+      1. En el archivo `app.js` pega la URL que obtuvimos en MongoDB Atlas dentro de `mongoose.conect("")`. Recuerda sustituir el parametro `<password>` dentro de esta URL por la contraseña que configuraste cuando creaste la base de datos
+      2. Crea una una carpeta llamada `dao` que tenga la siguiente estructura:
+         ###### Ilustración 2: Descripción de estructura de carpetas en el proyecto
+         ```
+            ├── src
+            │   ├── dao
+            |   |   ├── dbManagers
+            |   |   |   ├── carts.js
+            |   |   |   ├── messages.js
+            |   |   |   ├── products.js
+            |   |   ├── fileManagers
+            |   |   |   ├── carts.js
+            |   |   |   ├── messages.js
+            |   |   |   ├── products.js
+            │   │   ├── models
+            |   |   |   ├── carts.js
+            |   |   |   ├── messages.js
+            |   |   |   ├── products.js
+            │   ├── routes
+            │   ├── views
+            │   ├── app.js
+            │   ├── socket.js
+            │   ├── utils.js
+         ```
+      3. Mueve los managers creamos con modelo de persistencia de archivos dentro a la ruta: `\src\dao\dbManagers` tal como lo denota la estructura de carpetas en la **Ilustración 2**
+      4. Crea los modelos para cada entidad involucrada en nuestro sistema en la ruta `\src\dao\models`
+
+2. Crea una vista llamada `chat.handlebars` en la cual todos los usuarios conectados a nuestra aplicación podrán ver los mensajes enviados en tiempo real
+   1. Es importante que cada mensaje que se envíe en el chat sea guardado en la MongoDB ATLAS
+   2. El schema de un mensaje puede tener esta estructura:
+      ```
+      {
+         user: emailUsuario
+         message: cuerpoMensaje
+      }
+      ```
