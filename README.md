@@ -22,21 +22,35 @@
       1. **limit:**
          1. Permite devolver el numero de elementos solicitados por el usuario.
          2. Sí no se recibe en la petición, tomará un valor por defecto de 10
+         3. **Ejemplo:** Retorna dos productos de la db
+            ```
+            /api/products?limit=2
+            ```
       2. **page:**
          1. La pagina que queremos visualizar.
          2. Sí no se recibe, tendrá un valor por defecto de 1
+         3. **Ejemplo:** Retorna los productos de la pagina 3 desde la db
+            ```
+            /api/products?page=3
+            ```
       3. **query:**
          1. Representa el filtro a aplicar.
-         2. Nos debe permitir filtrar productos por categoría y por disponibilidad (status).
+         2. Nos debe permitir filtrar productos por categoría y por disponibilidad (status)
          3. Sí este parametro no se recibe, se listarán todos los elementos
+         4. **Ejemplo:** Retorna los productos que pertenecen a la categoria de `electronics` y que tienen un status de `true` desde la db
+            ```
+            /api/products?category=electronics&status=true
+            ```
       4. **sort:**
          1. Se ordenarán los productos por precio, ya sea de forma ascendente o descendente.
          2. Sí no se recibe este parametro, no se aplica ordenamiento
+         3. **Ejemplo:** Retorna los productos ordenados ascendemente por precio desde la db
+            ```
+            /api/products?sort=asc
+            ```
    2. Debe retornar una respuesta con la siguiente estructura:
 
-      ### Estructura de un Producto
-
-      ###### Tabla 1: Estructura de Producto
+      ###### Tabla 1: Estructura de respuesta
 
       | Propiedad   | Tipo de Dato | Descripción                                                                                            |
       | :---------- | :----------- | :----------------------------------------------------------------------------------------------------- |
@@ -58,31 +72,34 @@
           status: "success"
           payload: [
             {
-                "_id": "64305228441be760cfb1fecb",
-                "first_name": "Sibby",
-                "last_name": "David",
-                "email": "sdavid5@goo.gl",
-                "gender": "Female",
-                "grade": 2.5,
-                "group": "B"
+               "_id": "64361c2042e5b31f6f0e6790",
+               "title": "Muñeco Chayanne",
+               "description": "25x40 cm",
+               "code": "251213df",
+               "price": 20,
+               "status": true,
+               "stock": 10,
+               "category": "toys",
+               "thumbnails": [
+                  "http://localhost:8080/images/1681267744733-5e7337fab5b81bfb03b8ae7225605a67.jpg",
+                  "http://localhost:8080/images/1681267744735-bd9a9c6b74f7d51b35da4397a1a5cc79.gif",
+                  "http://localhost:8080/images/1681267744746-patrick-patrick-star.gif"
+               ],
+               "__v": 0
             },
             {
-                "_id": "64305228441be760cfb1fecc",
-                "first_name": "Erna",
-                "last_name": "Vasyaev",
-                "email": "evasyaev6@cbsnews.com",
-                "gender": "Female",
-                "grade": 4.6,
-                "group": "B"
-            },
-            {
-                "_id": "64305228441be760cfb1fecd",
-                "first_name": "Dev",
-                "last_name": "Trevaskus",
-                "email": "dtrevaskus7@yahoo.co.jp",
-                "gender": "Male",
-                "grade": 3.3,
-                "group": "C"
+               "_id": "643636bd999661a3d82a094b",
+               "title": "Celular",
+               "description": "8GB RAM",
+               "code": "251213df",
+               "price": 120,
+               "status": true,
+               "stock": 20,
+               "category": "toys",
+               "thumbnails": [
+                  "http://localhost:8080/images/1681274557564-FB_IMG_1597176180520-1.jpg"
+               ],
+               "__v": 0
             }
         ],
           totalPages: 20
