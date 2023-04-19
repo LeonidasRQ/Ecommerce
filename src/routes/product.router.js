@@ -25,11 +25,33 @@ router.get("/", async (req, res) => {
     options.pagination.sort.price = req.query.sort;
   }
 
-  const { docs: products, ...rest } = await manager.getPaginatedProducts(
-    options
-  );
+  const {
+    docs: products,
+    totalPages,
+    prevPage,
+    nextPage,
+    page,
+    hasPrevPage,
+    hasNextPage,
+  } = await manager.getPaginatedProducts(options);
 
-  return res.send({ status: "sucess", payload: products, ...rest });
+  const link = "/products?page=";
+
+  const prevLink = hasPrevPage ? link + prevPage : link + page;
+  const nextLink = hasNextPage ? link + nextPage : link + page;
+
+  return res.send({
+    status: "sucess",
+    payload: products,
+    totalPages,
+    prevPage,
+    nextPage,
+    page,
+    hasNextPage,
+    hasPrevPage,
+    prevLink,
+    nextLink,
+  });
 });
 
 router.get("/:pid", async (req, res) => {
