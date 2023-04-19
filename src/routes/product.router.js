@@ -6,17 +6,34 @@ const router = Router();
 const manager = new ProductManager();
 
 router.get("/", async (req, res) => {
-  const { limit } = req.query;
+  const options = {
+    query: {
+      status: req.query.status ?? true,
+    },
+    pagination: {
+      limit: req.query.limit ?? 10,
+      page: req.query.page ?? 1,
+      sort: {},
+    },
+  };
 
-  const products = await manager.getProducts();
-
-  if (!limit) {
-    return res.send({ products: products });
+  if (req.query.category) {
+    options.query.category = req.query.category;
   }
 
-  const limitedProducts = products.slice(0, limit);
+  if (req.query.sort) {
+    options.pagination.sort.price = req.query.sort;
+  }
 
-  return res.send({ products: limitedProducts });
+  /*   if (req.query.sort) {
+    options.pagination.sort.price = req.query.sort;
+  } */
+
+  const { docs: products, ...rest } = await manager.getPaginatedProducts(
+    options
+  );
+
+  return res.send({ status: "sucess", payload: products, ...rest });
 });
 
 router.get("/:pid", async (req, res) => {

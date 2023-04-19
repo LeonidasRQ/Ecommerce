@@ -12,6 +12,16 @@ export default class ProductManager {
     }
   };
 
+  getPaginatedProducts = async (options) => {
+    try {
+      const { query, pagination } = options;
+      const paginatedProducts = await productsModel.paginate(query, pagination);
+      return paginatedProducts;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   addProduct = async (product) => {
     try {
       const createdProduct = await productsModel.create(product);
