@@ -25,10 +25,6 @@ router.get("/", async (req, res) => {
     options.pagination.sort.price = req.query.sort;
   }
 
-  /*   if (req.query.sort) {
-    options.pagination.sort.price = req.query.sort;
-  } */
-
   const { docs: products, ...rest } = await manager.getPaginatedProducts(
     options
   );
