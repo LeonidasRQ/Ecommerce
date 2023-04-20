@@ -45,5 +45,53 @@ export default class CartManager {
     }
   };
 
-  // TODO: method for updating existing product. Remember to use arrayFilters with $push
+  addProducts = async (cartId, products) => {
+    try {
+      const updatedCart = await cartsModel.updateOne(
+        { _id: cartId },
+        { $set: { products } }
+      );
+      return updatedCart;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteProduct = async (cartId, productId) => {
+    try {
+      const updatedCart = await cartsModel.updateOne(
+        { _id: cartId },
+        { $pull: { products: { product: productId } } }
+      );
+      return updatedCart;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteAllProducts = async (cartId) => {
+    try {
+      const updatedCart = await cartsModel.updateMany(
+        { _id: cartId },
+        { $set: { products: [] } },
+        { multi: true }
+      );
+      return updatedCart;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  updateProductQuantity = async (cartId, productId, quantity) => {
+    try {
+      const updatedCart = await cartsModel.updateOne(
+        { _id: cartId },
+        { $set: { "products.$[elem].quantity": quantity } },
+        { arrayFilters: [{ "elem.product": productId }] }
+      );
+      return updatedCart;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 }
