@@ -7,9 +7,7 @@ const manager = new ProductManager();
 
 router.get("/", async (req, res) => {
   const options = {
-    query: {
-      status: req.query.status ?? true,
-    },
+    query: {},
     pagination: {
       limit: req.query.limit ?? 10,
       page: req.query.page ?? 1,
@@ -19,6 +17,10 @@ router.get("/", async (req, res) => {
 
   if (req.query.category) {
     options.query.category = req.query.category;
+  }
+
+  if (req.query.status) {
+    options.query.status = req.query.status;
   }
 
   if (req.query.sort) {

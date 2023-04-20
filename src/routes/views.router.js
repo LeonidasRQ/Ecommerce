@@ -7,8 +7,54 @@ const productManager = new ProductManager();
 const messageManager = new MessageManager();
 
 router.get("/", async (req, res) => {
-  const products = await productManager.getProducts();
-  res.render("home", { products, style: "styles.css", title: "Products" });
+  const options = {
+    query: {},
+    pagination: {
+      limit: req.query.limit ?? 10,
+      page: req.query.page ?? 1,
+      lean: true,
+      sort: {},
+    },
+  };
+
+  if (req.query.category) {
+    options.query.category = req.query.category;
+  }
+
+  if (req.query.status) {
+    options.query.status = req.query.status;
+  }
+
+  if (req.query.sort) {
+    options.pagination.sort.price = req.query.sort;
+  }
+
+  const {
+    docs: products,
+    totalPages,
+    prevPage,
+    nextPage,
+    page,
+    hasPrevPage,
+    hasNextPage,
+  } = await productManager.getPaginatedProducts(options);
+
+  const link = "/?page=";
+
+  const prevLink = hasPrevPage ? link + prevPage : link + page;
+  const nextLink = hasNextPage ? link + nextPage : link + page;
+
+  return res.render("home", {
+    products,
+    totalPages,
+    page,
+    hasNextPage,
+    hasPrevPage,
+    prevLink,
+    nextLink,
+    title: "Products",
+    style: "styles.css",
+  });
 });
 
 router.get("/realtimeproducts", async (req, res) => {
