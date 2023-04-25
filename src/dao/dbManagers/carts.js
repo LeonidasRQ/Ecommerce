@@ -39,8 +39,6 @@ export default class CartManager {
         products: { $elemMatch: { product: productId } },
       });
 
-      console.log(productExist);
-
       if (!productExist) {
         const updatedCart = await cartsModel.updateOne(
           { _id: cartId },

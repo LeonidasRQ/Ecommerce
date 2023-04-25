@@ -58,13 +58,15 @@ router.get("/", async (req, res) => {
   });
 });
 
-router.get("/product", async (req, res) => {
-  res.render("product");
+router.get("/product/:pid", async (req, res) => {
+  const productId = req.params.pid;
+  const product = await productManager.getProductById(productId);
+  res.render("product", { title: "Product Details", product });
 });
 
 router.get("/cart", async (req, res) => {
   const cart = await cartManager.getCartById("6440b66102acad1337350cc8");
-  res.render("cart", { products: cart.products });
+  res.render("cart", { products: cart.products, title: "Cart Items" });
 });
 
 router.get("/realtimeproducts", async (req, res) => {

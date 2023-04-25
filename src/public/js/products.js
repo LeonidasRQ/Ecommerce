@@ -12,12 +12,3 @@ async function addToCart(productId) {
   let result = await response.json();
   console.log(result);
 }
-
-/* async function showProductDetails(productId) {
-  let response = await fetch(`/api/products/${productId}`, {
-    method: "GET",
-  });
-
-  const result = await response.json();
-  console.log(result.payload);
-} */
