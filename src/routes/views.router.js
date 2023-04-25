@@ -1,9 +1,11 @@
 import { Router } from "express";
 import ProductManager from "../dao/dbManagers/products.js";
 import MessageManager from "../dao/dbManagers/messages.js";
+import CartManager from "../dao/dbManagers/carts.js";
 
 const router = Router();
 const productManager = new ProductManager();
+const cartManager = new CartManager();
 const messageManager = new MessageManager();
 
 router.get("/", async (req, res) => {
@@ -53,8 +55,16 @@ router.get("/", async (req, res) => {
     prevLink,
     nextLink,
     title: "Products",
-    style: "styles.css",
   });
+});
+
+router.get("/product", async (req, res) => {
+  res.render("product");
+});
+
+router.get("/cart", async (req, res) => {
+  const cart = await cartManager.getCartById("6440b66102acad1337350cc8");
+  res.render("cart", { products: cart.products });
 });
 
 router.get("/realtimeproducts", async (req, res) => {

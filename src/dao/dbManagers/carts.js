@@ -16,7 +16,8 @@ export default class CartManager {
     try {
       const cart = await cartsModel
         .findOne({ _id: id })
-        .populate("products.product");
+        .populate("products.product")
+        .lean();
       return cart;
     } catch (error) {
       console.log(error);
@@ -34,11 +35,25 @@ export default class CartManager {
 
   addProduct = async (cartId, productId, quantity) => {
     try {
+      const productExist = await cartsModel.findOne({
+        products: { $elemMatch: { product: productId } },
+      });
+
+      console.log(productExist);
+
+      if (!productExist) {
+        const updatedCart = await cartsModel.updateOne(
+          { _id: cartId },
+          { $push: { products: [{ product: productId, quantity }] } }
+        );
+        return updatedCart;
+      }
+
       const updatedCart = await cartsModel.updateOne(
         { _id: cartId },
-        { $push: { products: [{ product: productId, quantity }] } }
+        { $inc: { "products.$[elem].quantity": quantity } },
+        { arrayFilters: [{ "elem.product": productId }] }
       );
-
       return updatedCart;
     } catch (error) {
       console.log(error);

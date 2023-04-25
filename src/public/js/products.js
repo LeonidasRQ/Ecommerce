@@ -1,5 +1,4 @@
 const cartId = "6440b66102acad1337350cc8";
-const quantity = 1;
 
 async function addToCart(productId) {
   let response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
@@ -13,3 +12,12 @@ async function addToCart(productId) {
   let result = await response.json();
   console.log(result);
 }
+
+/* async function showProductDetails(productId) {
+  let response = await fetch(`/api/products/${productId}`, {
+    method: "GET",
+  });
+
+  const result = await response.json();
+  console.log(result.payload);
+} */
