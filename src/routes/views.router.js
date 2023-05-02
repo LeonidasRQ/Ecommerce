@@ -97,8 +97,4 @@ router.get("/", isProtected, (req, res) => {
   res.render("profile", { user: req.session.user });
 });
 
-router.get("/error", (req, res) => {
-  res.render("error");
-});
-
 export default router;
