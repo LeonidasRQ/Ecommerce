@@ -19,5 +19,9 @@ form.addEventListener("submit", async (e) => {
   let result = await response.json();
   result.status === "sucess"
     ? (window.location.href = "/")
-    : (window.location.href = "/error");
+    : Swal.fire({
+        icon: "error",
+        title: "...Oops",
+        text: result.error,
+      });
 });
