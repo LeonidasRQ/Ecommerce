@@ -1,13 +1,17 @@
 import { Router } from "express";
 import SessionManager from "../dao/dbManagers/sessions.js";
 import { isValidPassword } from "../utils.js";
-import config from "../config.js";
+import config from "../config/config.js";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 
 const router = Router();
 
 const sessionManager = new SessionManager();
+
+const {
+  jwt: { cookieName, secret },
+} = config;
 
 router.post(
   "/register",
@@ -46,9 +50,9 @@ router.post("/login", async (req, res) => {
     cart: user.cart,
   };
 
-  const token = jwt.sign(jwtUser, config.jwtSecret, { expiresIn: "24h" });
+  const token = jwt.sign(jwtUser, secret, { expiresIn: "24h" });
 
-  return res.cookie("jwtCookie", token, { httpOnly: true }).send({
+  return res.cookie(cookieName, token, { httpOnly: true }).send({
     status: "sucess",
     message: "Login sucessful",
   });
@@ -73,15 +77,15 @@ router.get(
       cart: req.user.cart,
     };
 
-    const token = jwt.sign(jwtUser, config.jwtSecret, { expiresIn: "24h" });
+    const token = jwt.sign(jwtUser, secret, { expiresIn: "24h" });
 
-    res.cookie("jwtCookie", token, { httpOnly: true }).redirect("/");
+    res.cookie(cookieName, token, { httpOnly: true }).redirect("/");
   }
 );
 
 router.post("/logout", (req, res) => {
   return res
-    .clearCookie("jwtCookie")
+    .clearCookie(cookieName)
     .send({ status: "sucess", message: "log out sucessful" });
 });
 
