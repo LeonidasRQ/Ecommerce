@@ -6,10 +6,10 @@ import database from "./mongo.js";
 import socket from "./socket.js";
 import passport from "passport";
 import initializePassport from "./config/passport.js";
-import productsRouter from "./routes/product.router.js";
-import cartsRouter from "./routes/cart.router.js";
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
-import sessionsRouter from "./routes/sessions.router.js";
+import usersRouter from "./routes/users.router.js";
 import __dirname from "./utils.js";
 
 // Initialization
@@ -19,6 +19,11 @@ const app = express();
 app.engine("handlebars", handlebars.engine());
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "handlebars");
+
+const hbs = handlebars.create({});
+hbs.handlebars.registerHelper("json", function (context) {
+  return JSON.stringify(context);
+});
 
 // Midlewares
 app.use(express.json());
@@ -35,7 +40,7 @@ database.connect();
 // Routes
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
-app.use("/api/sessions", sessionsRouter);
+app.use("/api/users", usersRouter);
 app.use("/", viewsRouter);
 
 const httpServer = app.listen(8080, (req, res) => {
