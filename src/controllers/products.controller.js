@@ -1,11 +1,6 @@
-import { Router } from "express";
-import ProductManager from "../dao/dbManagers/products.js";
-import { uploader } from "../utils.js";
+import { productsService } from "../services/index.js";
 
-const router = Router();
-const manager = new ProductManager();
-
-router.get("/", async (req, res) => {
+export const getProducts = async (req, res) => {
   const options = {
     query: {},
     pagination: {
@@ -35,7 +30,7 @@ router.get("/", async (req, res) => {
     page,
     hasPrevPage,
     hasNextPage,
-  } = await manager.getPaginatedProducts(options);
+  } = await productsService.getProducts(options);
 
   const link = "/products?page=";
 
@@ -54,11 +49,11 @@ router.get("/", async (req, res) => {
     prevLink,
     nextLink,
   });
-});
+};
 
-router.get("/:pid", async (req, res) => {
+export const getProductById = async (req, res) => {
   const productId = req.params.pid;
-  const product = await manager.getProductById(productId);
+  const product = await productsService.getProductById(productId);
 
   if (!product) {
     return res
@@ -70,9 +65,9 @@ router.get("/:pid", async (req, res) => {
     message: "product found",
     payload: product,
   });
-});
+};
 
-router.post("/", uploader.array("thumbnails", 5), async (req, res) => {
+export const addProduct = async (req, res) => {
   const product = req.body;
   const files = req.files;
 
@@ -92,15 +87,18 @@ router.post("/", uploader.array("thumbnails", 5), async (req, res) => {
     });
   }
 
-  await manager.addProduct(product);
+  await productsService.addProduct(product);
   return res.send({ status: "OK", message: "Product successfully added" });
-});
+};
 
-router.put("/:pid", async (req, res) => {
+export const updateProduct = async (req, res) => {
   const productId = req.params.pid;
   const changes = req.body;
 
-  const updatedProduct = await manager.updateProduct(productId, changes);
+  const updatedProduct = await productsService.updateProduct(
+    productId,
+    changes
+  );
 
   if (!updatedProduct) {
     return res
@@ -111,11 +109,11 @@ router.put("/:pid", async (req, res) => {
     status: "OK",
     message: "Product succesfully updated",
   });
-});
+};
 
-router.delete("/:pid", async (req, res) => {
+export const deleteProduct = async (req, res) => {
   const productId = req.params.pid;
-  const deletedProduct = await manager.deleteProduct(productId);
+  const deletedProduct = await productsService.deleteProduct(productId);
 
   if (!deletedProduct) {
     return res
@@ -123,6 +121,4 @@ router.delete("/:pid", async (req, res) => {
       .send({ status: "Error", error: "Product does not exist" });
   }
   return res.send({ status: "OK", message: "Product deleted successfully" });
-});
-
-export default router;
+};

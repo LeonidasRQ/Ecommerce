@@ -2,10 +2,8 @@
 
 ## Resumen
 
-Con base en el login de nuestro entregable anterior, refactorizar para incluir los nuevos conceptos
+Con base en las clases previamente vistas, realizar los cambios necesarios en tu proyecto para que se base en un modelo de capas.
 
 ## Requerimientos
 
-1. Utiliza bcrypt para hashear la contraseña del usuario al momento de registrarse
-2. Se deberá contar con una implementación de passport, tanto para register como para login
-3. Implementar el método de autenticación de GitHub a la vista de login
+El proyecto debe contar con capas de routing, controlador, dao, con nuestras vistas bien separadas y con las responsabilidades correctamente delegadas.
