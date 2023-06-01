@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import { productsService, cartsService } from "../services/index.js";
+import GetCurrentUserDto from "../dao/dtos/get-current-user.js";
 
 const router = Router();
 
@@ -95,7 +96,9 @@ router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.render("profile", { user: req.user });
+    const jwtUser = req.user;
+    const user = new GetCurrentUserDto(jwtUser);
+    res.render("profile", { user });
   }
 );
 

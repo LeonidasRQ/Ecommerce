@@ -44,6 +44,7 @@ export const login = async (req, res) => {
       name: `${user.first_name} ${user.last_name}`,
       email: user.email,
       cart: user.cart,
+      role: user.role,
     };
 
     const token = jwt.sign(jwtUser, secret, { expiresIn: "24h" });
