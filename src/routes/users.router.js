@@ -15,7 +15,7 @@ router.post(
   "/register",
   passport.authenticate("register", {
     session: false,
-    failureRedirect: "/api/sessions/failRegister",
+    failureRedirect: "/api/users/failRegister",
   }),
   register
 );

@@ -7,13 +7,19 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/products.controller.js";
+import { handlePolicies } from "../middlewares/authorization.js";
 
 const router = Router();
 
-router.get("/", getProducts);
-router.get("/:pid", getProductById);
-router.post("/", uploader.array("thumbnails", 5), addProduct);
-router.put("/:pid", updateProduct);
-router.delete("/:pid", deleteProduct);
+router.get("/", handlePolicies(["ADMIN"]), getProducts);
+router.get("/:pid", handlePolicies(["ADMIN"]), getProductById);
+router.post(
+  "/",
+  uploader.array("thumbnails", 5),
+  handlePolicies(["ADMIN"]),
+  addProduct
+);
+router.put("/:pid", handlePolicies(["ADMIN"]), updateProduct);
+router.delete("/:pid", handlePolicies(["ADMIN"]), deleteProduct);
 
 export default router;
