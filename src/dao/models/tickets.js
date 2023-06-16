@@ -9,6 +9,7 @@ const ticketsSchema = new mongoose.Schema({
   },
   purchase_datetime: {
     type: Date,
+    default: Date.now,
   },
   ammount: Number,
   purchaser: String,
