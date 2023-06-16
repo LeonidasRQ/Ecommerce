@@ -1,7 +1,5 @@
 import { Router } from "express";
-
-import passport from "passport";
-
+import { passportCall, handlePolicies } from "../middlewares/authorization.js";
 import {
   getCarts,
   getCartById,
@@ -26,7 +24,8 @@ router.delete("/:cid/product/:pid", deleteProduct);
 router.delete("/:cid", deleteProducts);
 router.post(
   "/:cid/purchase",
-  passport.authenticate("jwt", { session: false }),
+  passportCall("jwt"),
+  handlePolicies(["USER"]),
   createPurchase
 );
 
